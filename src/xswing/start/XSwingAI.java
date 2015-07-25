@@ -8,9 +8,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
+import lib.mylib.ScalableGameState;
 import lib.mylib.gamestates.LoadingScreen;
 import xswing.GamePanel;
 import xswing.LocationController;
+import xswing.MainGame;
 
 public class XSwingAI extends StateBasedGame{
 	
@@ -20,16 +22,15 @@ public class XSwingAI extends StateBasedGame{
 	}
 	
 	public void startGame(){
-		boolean debug = false;
 		boolean fullscreen = false;
 		try {
 			AppGameContainer game = new AppGameContainer(this);
 			game.setShowFPS(true);
-			game.setDisplayMode(1024, 768, fullscreen);
+			game.setDisplayMode(1280, 720, fullscreen);
 			game.setClearEachFrame(true);
 			game.setIcons(new String[] { RES_DIR + "16.png", RES_DIR + "32.png" });
 			game.setForceExit(false);
-			game.setMouseGrabbed(!debug);
+			game.setMouseGrabbed(false);
 			game.start();
 		} catch (SlickException e) {
 			e.printStackTrace();
@@ -67,8 +68,15 @@ public class XSwingAI extends StateBasedGame{
 	public void initStatesList(GameContainer container) throws SlickException {
 		LocationController.setMultiplayer(false);
 		addState(new LoadingScreen(0));
-		addState(new GamePanel(1));
-		LocationController.setMultiplayer(false);
+		//addState(new GamePanel(1));
+		
+		MainGame mainGame = new MainGame();
+		container.setClearEachFrame(true);
+		ScalableGameState scaledGame = new ScalableGameState(mainGame, 1920, 1080, true);
+		scaledGame.setId(1);
+		
+		addState(scaledGame);
+		// ResizeableGameState scaledGamePan
 	}
 
 }
