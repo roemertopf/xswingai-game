@@ -14,6 +14,12 @@ import xswing.GamePanel;
 import xswing.LocationController;
 import xswing.MainGame;
 
+/**
+ * Starts the game in a special way, so that the AI can play the game via the interface.
+ * 
+ * @author TobiasSebastian
+ *
+ */
 public class XSwingAI extends StateBasedGame{
 	
 	
@@ -26,6 +32,7 @@ public class XSwingAI extends StateBasedGame{
 		try {
 			AppGameContainer game = new AppGameContainer(this);
 			game.setShowFPS(true);
+			// MIt Wireframe:
 			game.setDisplayMode(1280, 720, fullscreen);
 			game.setClearEachFrame(true);
 			game.setIcons(new String[] { RES_DIR + "16.png", RES_DIR + "32.png" });

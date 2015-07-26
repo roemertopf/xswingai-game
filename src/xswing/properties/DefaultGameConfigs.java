@@ -116,7 +116,9 @@ public class DefaultGameConfigs extends GameConfigs {
 		cannon.addImage("SpriteSheet", "cannons.png");
 		singlePlayer.addObjectConfig(cannon);
 
-		background.setImage("background_preview_hd.png");
+		// Vorheriges wireframeartiges Bild: 
+		//background.setImage("background_preview_hd.png");
+		background.setImage("swing_background_hd_v1.jpg");
 		singlePlayer.addObjectConfig(background);
 
 		ball.setSize(70, 70);
