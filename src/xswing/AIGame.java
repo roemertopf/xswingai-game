@@ -1,7 +1,3 @@
-/*
- * @version 0.0 14.04.2008
- * @author Tobse F
- */
 package xswing;
 
 import static lib.mylib.options.Paths.FONT_DIR;
@@ -46,8 +42,6 @@ import tools.BallDropSimulator;
 import xswing.EffectCatalog.particleEffects;
 import xswing.LocationController.GameComponentLocation;
 import xswing.ai.AIInterface;
-import xswing.ai.AIListener;
-import xswing.ai.AgentInterface;
 import xswing.ball.Ball;
 import xswing.ball.BallFactory;
 import xswing.ball.BallKiller;
@@ -69,8 +63,7 @@ import xswing.start.XSwing;
  * 
  * @author Tobse
  */
-public class MainGame extends BasicGameState implements Resetable, BallEventListener, XSwingListener,
-	AgentInterface{
+public class AIGame extends BasicGameState implements Resetable, BallEventListener, XSwingListener, AgentInterface {
 
 
 	private Background background = new Background();
@@ -116,9 +109,6 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 	private GameStatistics gameStatistics;
 
 	private EventListenerList gameEventListeners=  new EventListenerList();
-	
-	/* AI Listener*/
-	private AIListener agent;
 
 	/** Highscore submit Panel */
 	private NiftyGameState highScoreState = null;
@@ -297,12 +287,6 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 		music.shuffle();
 		music.play();
 		// container.setMouseGrabbed(false);
-		// or here! don't know what is better..
-		if (agent != null){
-			synchronized (agent) {
-				agent.notifyAll();
-			}
-		}
 	}
 
 	/** Resets all values and starts a new game */
@@ -313,10 +297,7 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 		ballsToMove.clear();
 		ballFactory.addTopBalls();
 		container.setPaused(false);
-		// maybe here signal to the listener?!
-		// not here
 		fireXSwingEvent(new XSwingEvent(this, GameEventType.GAME_SARTED));
-		// but maybe here
 	}
 
 	@Override
@@ -607,64 +588,6 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 
 	public void addStone() {
 		ballFactory.addNewStone();
-	}
-
-	@Override
-	public Ball[][] getBallDepot() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Ball[][] getGameboard() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Ball getBall() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void dropBall(int row) {
-		Log.debug("Shoul be dropping... at row " + row);
-		if (row == canon.getCanonPosition()){
-			notifyListener(new XSwingEvent(this, GameEventType.PRESSED_DOWN));
-//			if (canon.isReadyToReleaseBall()) {
-//				Ball ball = ballFactory.getNewBall();
-//				notifyListener(new XSwingEvent(this, GameEventType.BALL_DROPPED, ball));
-//			}
-		}
-		else if (row < canon.getCanonPosition()){
-			canon.moveLeft();
-			try{
-				Thread.sleep(250);
-			}
-			catch (InterruptedException e){
-				Log.warn("Interrupted during dropBall waiting");
-			}
-		}
-		else{
-			// row > canonPosition
-			canon.moveRight();
-			try{
-				Thread.sleep(250);
-			}
-			catch (InterruptedException e){
-				Log.warn("Interrupted during dropBall waiting");
-			}
-		}
-	}
-	
-	/**
-	 * Adds an AI listener to the game. The listener should be an agent. He will be informed
-	 * when the game is ready to be played.
-	 * @param agent
-	 */
-	public void addAIListener(AIListener agent){
-		this.agent = agent;
 	}
 
 }

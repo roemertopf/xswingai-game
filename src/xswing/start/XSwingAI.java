@@ -13,6 +13,9 @@ import lib.mylib.gamestates.LoadingScreen;
 import xswing.GamePanel;
 import xswing.LocationController;
 import xswing.MainGame;
+import xswing.ai.AIListener;
+import xswing.ai.AgentInterface;
+import xswing.ball.Ball;
 
 /**
  * Starts the game in a special way, so that the AI can play the game via the interface.
@@ -20,11 +23,14 @@ import xswing.MainGame;
  * @author TobiasSebastian
  *
  */
-public class XSwingAI extends StateBasedGame{
+public class XSwingAI extends StateBasedGame implements AgentInterface{
 	
+	private MainGame mainGame;
+	private AIListener agent;
 	
-	public XSwingAI() {
+	public XSwingAI(AIListener agent) {
 		super("XSwingAI");
+		this.agent = agent;
 	}
 	
 	public void startGame(){
@@ -77,7 +83,8 @@ public class XSwingAI extends StateBasedGame{
 		addState(new LoadingScreen(0));
 		//addState(new GamePanel(1));
 		
-		MainGame mainGame = new MainGame();
+		mainGame = new MainGame();
+		mainGame.addAIListener(agent);
 		container.setClearEachFrame(true);
 		ScalableGameState scaledGame = new ScalableGameState(mainGame, 1920, 1080, true);
 		scaledGame.setId(1);
@@ -85,5 +92,30 @@ public class XSwingAI extends StateBasedGame{
 		addState(scaledGame);
 		// ResizeableGameState scaledGamePan
 	}
+
+	@Override
+	public Ball[][] getBallDepot() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Ball[][] getGameboard() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Ball getBall() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void dropBall(int row) {
+		mainGame.dropBall(row);		
+	}
+
+	
 
 }

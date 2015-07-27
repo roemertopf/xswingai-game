@@ -65,7 +65,13 @@ public class Cannon extends SObject implements Resetable {
 		this.move = move;
 	}
 	
-	
+	/**
+	 * Returns the 
+	 * @author TobiasSebastian
+	 */
+	public int getCanonPosition(){
+		return cannonPosition;
+	}
 
 	/** Moves the canon one step left */
 	public void moveLeft() {

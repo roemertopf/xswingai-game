@@ -30,7 +30,7 @@ public class EffectCatalog implements Resetable, Updateable, Drawable {
 			particleEffects.class);
 	private Map<particleEffects, Sound> sounds = new EnumMap<particleEffects, Sound>(
 			particleEffects.class);
-	private boolean showParticles = true;
+	private boolean showParticles = false; // particle cause crashing when ai is acting... Don't know why..
 
 	public void setSound(Sound sound, particleEffects effect) {
 		sounds.put(effect, sound);
