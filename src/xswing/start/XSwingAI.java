@@ -35,10 +35,13 @@ public class XSwingAI extends StateBasedGame implements Runnable{
 	
 	@Override
 	public void run() {
+		// starting the game when thread is running this class
 		startGame();
-		System.out.println("I got here..."); // hier objekt für fertig setzten geht natürlich nit..
 	}
 	
+	/**
+	 * Starts the game in ai mode with some hard-coded settings.
+	 */
 	public void startGame(){
 		boolean fullscreen = false;
 		try {
@@ -56,34 +59,6 @@ public class XSwingAI extends StateBasedGame implements Runnable{
 		}
 		
 	}
-	
-	
-
-//	/**
-//	 * @param args [0] debugmode (true= window mode, no mouse grabbing, debuginfos, show fps)
-//	 */
-//	public static void main(String[] args) {
-//		boolean debug = false;
-//		if (args.length > 0) {
-//			debug = Boolean.valueOf(args[0]);
-//		}
-//		boolean fullsceen = !debug;
-//		Log.info("Debugmode: " + debug);
-//		// Log.setVerbose(debug); //debug info logging
-//		try {
-//			AppGameContainer game = new AppGameContainer(new XSwingFastStart());
-//			game.setShowFPS(debug);
-//			game.setDisplayMode(1024, 768, fullsceen);
-//			// game.setDisplayMode(460,390,fullsceen);
-//			game.setClearEachFrame(true);
-//			game.setIcons(new String[] { RES_DIR + "16.png", RES_DIR + "32.png" });
-//			game.setForceExit(false);
-//			game.setMouseGrabbed(!debug);
-//			game.start();
-//		} catch (SlickException e) {
-//			e.printStackTrace();
-//		}
-//	}
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
@@ -101,30 +76,5 @@ public class XSwingAI extends StateBasedGame implements Runnable{
 		addState(scaledGame);
 		// ResizeableGameState scaledGamePan
 	}
-
-//	@Override
-//	public Ball[][] getBallDepot() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//	
-//	@Override
-//	public Ball[][] getGameboard() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//	
-//	@Override
-//	public Ball getBall() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//	
-//	@Override
-//	public void dropBall(int row) {
-//		mainGame.dropBall(row);		
-//	}
-
-	
 
 }

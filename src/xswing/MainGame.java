@@ -297,8 +297,9 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 		music.shuffle();
 		music.play();
 		// container.setMouseGrabbed(false);
-		// or here! don't know what is better..
-		agent.gameStarted(this);;
+		// all start up has finished so:
+		// informing agent that game is ready to be played..
+		agent.gameStarted(this); // maybe nicer would be at newGame due to restarts once game is entered..
 	}
 
 	/** Resets all values and starts a new game */
@@ -309,10 +310,7 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 		ballsToMove.clear();
 		ballFactory.addTopBalls();
 		container.setPaused(false);
-		// maybe here signal to the listener?!
-		// not here
 		fireXSwingEvent(new XSwingEvent(this, GameEventType.GAME_SARTED));
-		// but maybe here
 	}
 
 	@Override
