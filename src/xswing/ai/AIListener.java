@@ -9,7 +9,7 @@ package xswing.ai;
  */
 public interface AIListener {
 	
-	void gameStarted();
+	void gameStarted(AgentInterface game);
 	
 	// maybe also
 	// void nextTurn();

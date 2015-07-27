@@ -23,14 +23,20 @@ import xswing.ball.Ball;
  * @author TobiasSebastian
  *
  */
-public class XSwingAI extends StateBasedGame implements AgentInterface{
+public class XSwingAI extends StateBasedGame implements Runnable{
 	
-	private MainGame mainGame;
+	public AgentInterface game;
 	private AIListener agent;
 	
 	public XSwingAI(AIListener agent) {
 		super("XSwingAI");
 		this.agent = agent;
+	}
+	
+	@Override
+	public void run() {
+		startGame();
+		System.out.println("I got here..."); // hier objekt für fertig setzten geht natürlich nit..
 	}
 	
 	public void startGame(){
@@ -50,6 +56,8 @@ public class XSwingAI extends StateBasedGame implements AgentInterface{
 		}
 		
 	}
+	
+	
 
 //	/**
 //	 * @param args [0] debugmode (true= window mode, no mouse grabbing, debuginfos, show fps)
@@ -83,38 +91,39 @@ public class XSwingAI extends StateBasedGame implements AgentInterface{
 		addState(new LoadingScreen(0));
 		//addState(new GamePanel(1));
 		
-		mainGame = new MainGame();
+		MainGame mainGame = new MainGame();
 		mainGame.addAIListener(agent);
 		container.setClearEachFrame(true);
 		ScalableGameState scaledGame = new ScalableGameState(mainGame, 1920, 1080, true);
 		scaledGame.setId(1);
+		game = (AgentInterface) mainGame;
 		
 		addState(scaledGame);
 		// ResizeableGameState scaledGamePan
 	}
 
-	@Override
-	public Ball[][] getBallDepot() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public Ball[][] getGameboard() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public Ball getBall() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public void dropBall(int row) {
-		mainGame.dropBall(row);		
-	}
+//	@Override
+//	public Ball[][] getBallDepot() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//	
+//	@Override
+//	public Ball[][] getGameboard() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//	
+//	@Override
+//	public Ball getBall() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//	
+//	@Override
+//	public void dropBall(int row) {
+//		mainGame.dropBall(row);		
+//	}
 
 	
 

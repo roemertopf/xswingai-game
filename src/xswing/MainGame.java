@@ -298,11 +298,7 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 		music.play();
 		// container.setMouseGrabbed(false);
 		// or here! don't know what is better..
-		if (agent != null){
-			synchronized (agent) {
-				agent.notifyAll();
-			}
-		}
+		agent.gameStarted(this);;
 	}
 
 	/** Resets all values and starts a new game */
