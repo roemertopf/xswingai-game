@@ -45,6 +45,7 @@ import lib.mylib.util.SlickUtils;
 import tools.BallDropSimulator;
 import xswing.EffectCatalog.particleEffects;
 import xswing.LocationController.GameComponentLocation;
+import xswing.ai.AICommunicator;
 import xswing.ai.AIInterface;
 import xswing.ai.AIListener;
 import xswing.ai.AgentInterface;
@@ -119,6 +120,7 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 	
 	/* AI Listener*/
 	private AIListener agent;
+	private AICommunicator aiCommunicator;
 
 	/** Highscore submit Panel */
 	private NiftyGameState highScoreState = null;
@@ -299,7 +301,8 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 		// container.setMouseGrabbed(false);
 		// all start up has finished so:
 		// informing agent that game is ready to be played..
-		agent.gameStarted(this); // maybe nicer would be at newGame due to restarts once game is entered..
+//		agent.gameStarted(this); // maybe nicer would be at newGame due to restarts once game is entered..
+//		updateAIBoard();
 	}
 
 	/** Resets all values and starts a new game */
@@ -339,6 +342,22 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		Input input = container.getInput();
+		
+		synchronized (aiCommunicator) {
+			// first execute next drop command based on communicator value
+			// if it is set
+			int dropVal = aiCommunicator.getDropAt();
+			if (dropVal != -1){
+				dropBall(dropVal);
+				aiCommunicator.updateBoard(ballTable.getBalls());
+//				aiCommunicator.notify();
+			}
+			// if it is not set: agent has to calculate the next move, so we do nothing...
+			// inform communicator that turn was done
+			aiCommunicator.notify();
+			
+		}
+		
 		if (!isGameOver) {
 			checkKeysMain(input);
 			if (!container.isPaused()) { // no Input while game is paused
@@ -603,28 +622,16 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 		ballFactory.addNewStone();
 	}
 
-	@Override
-	public Ball[][] getBallDepot() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public Ball[][] getGameboard() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Ball getBall() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	private synchronized void updateAIBoard() {
+//		aiBoard.updateBoard(ballTable.getBalls());
+//		aiBoard.notify();
+//	}
 
 	@Override
 	public void dropBall(int row) {
-		Log.debug("Shoul be dropping... at row " + row);
 		if (row == canon.getCanonPosition()){
+			Log.debug("Should be dropping... at row " + row);
 			notifyListener(new XSwingEvent(this, GameEventType.PRESSED_DOWN));
 //			if (canon.isReadyToReleaseBall()) {
 //				Ball ball = ballFactory.getNewBall();
@@ -633,22 +640,24 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 		}
 		else if (row < canon.getCanonPosition()){
 			canon.moveLeft();
-			try{
-				Thread.sleep(250);
-			}
-			catch (InterruptedException e){
-				Log.warn("Interrupted during dropBall waiting");
-			}
+			dropBall(row);
+//			try{
+//				Thread.sleep(250);
+//			}
+//			catch (InterruptedException e){
+//				Log.warn("Interrupted during dropBall waiting");
+//			}
 		}
 		else{
 			// row > canonPosition
 			canon.moveRight();
-			try{
-				Thread.sleep(250);
-			}
-			catch (InterruptedException e){
-				Log.warn("Interrupted during dropBall waiting");
-			}
+			dropBall(row);
+//			try{
+//				Thread.sleep(250);
+//			}
+//			catch (InterruptedException e){
+//				Log.warn("Interrupted during dropBall waiting");
+//			}
 		}
 	}
 	
@@ -659,6 +668,15 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 	 */
 	public void addAIListener(AIListener agent){
 		this.agent = agent;
+	}
+	
+	/**
+	 * Adds an AI listener to the game. The listener should be an agent. He will be informed
+	 * when the game is ready to be played.
+	 * @param agent
+	 */
+	public void setAICommunicator(AICommunicator comm){
+		this.aiCommunicator = comm;
 	}
 
 }

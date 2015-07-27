@@ -8,11 +8,14 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
 
+import com.sun.corba.se.impl.oa.poa.AOMEntry;
+
 import lib.mylib.ScalableGameState;
 import lib.mylib.gamestates.LoadingScreen;
 import xswing.GamePanel;
 import xswing.LocationController;
 import xswing.MainGame;
+import xswing.ai.AICommunicator;
 import xswing.ai.AIListener;
 import xswing.ai.AgentInterface;
 import xswing.ball.Ball;
@@ -27,10 +30,11 @@ public class XSwingAI extends StateBasedGame implements Runnable{
 	
 	public AgentInterface game;
 	private AIListener agent;
+	private AICommunicator communicator;
 	
-	public XSwingAI(AIListener agent) {
+	public XSwingAI(AICommunicator comm) {
 		super("XSwingAI");
-		this.agent = agent;
+		this.communicator = comm;
 	}
 	
 	@Override
@@ -67,7 +71,7 @@ public class XSwingAI extends StateBasedGame implements Runnable{
 		//addState(new GamePanel(1));
 		
 		MainGame mainGame = new MainGame();
-		mainGame.addAIListener(agent);
+		mainGame.setAICommunicator(communicator);
 		container.setClearEachFrame(true);
 		ScalableGameState scaledGame = new ScalableGameState(mainGame, 1920, 1080, true);
 		scaledGame.setId(1);
