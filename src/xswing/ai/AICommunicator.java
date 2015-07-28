@@ -82,7 +82,12 @@ public class AICommunicator {
 	}
 
 	public void setDropAt(int dropAt) {
-		this.dropAt = dropAt;
+		if ( (dropAt < 8) && (dropAt >= 0)){
+			this.dropAt = dropAt;
+		}
+		else{
+			this.dropAt = -1;
+		}
 	}
 
 }
