@@ -5,6 +5,7 @@ import xswing.ball.Ball;
 public class AICommunicator {
 	
 	private int dropAt;
+	private boolean gameEnded;
 	
 	private static final int row = 10;
 	private static final int column = 8;
@@ -89,5 +90,14 @@ public class AICommunicator {
 			this.dropAt = -1;
 		}
 	}
+	
+	public boolean isGameEnded() {
+		return gameEnded;
+	}
+
+	public void setGameEnded(boolean gameEnded) {
+		this.gameEnded = gameEnded;
+	}
+
 
 }

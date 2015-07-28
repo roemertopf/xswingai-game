@@ -522,10 +522,19 @@ public class MainGame extends BasicGameState implements Resetable, BallEventList
 			firstStart = false;
 		}
 		// highScoreState.init(container, game);
-		highScoreState.enter(container, game);
+//		highScoreState.enter(container, game);
 		// highScoreState.gotoScreenXSwing.GAME_OVER(; //VOID: ScreenID of NiftyGameState?)
 		gameOver.play();
 		container.setPaused(true);
+		
+		// here should be changed that game is played only once per start..
+		synchronized (aiCommunicator) {
+			aiCommunicator.setGameEnded(true);
+			aiCommunicator.notify();
+		}
+		Log.info("AI scored: " + highScoreCounter.getScore());
+		container.exit();
+		
 	}
 
 	/**
